@@ -18,18 +18,26 @@ export class S3Service {
 
 
   async UploadSettings(content: Record<string, string>) {
-    const settingsFilename = 'settings.json';
-    const settingsPath = `settings/${settingsFilename}`;
+    try {
+      const settingsFilename = 'settings.json';
+      const settingsPath = `settings/${settingsFilename}`;
 
-    await fs.writeFile(settingsPath, JSON.stringify(content));
+      await fs.remove(settingsPath);
 
-    const file = await fs.readFile(settingsPath);
-    
-    const uploadStatus = await this.s3.Upload({
-      buffer: file,
-      name: settingsFilename
-    }, 'settings')
+      await fs.ensureDir('settings')
 
-    return uploadStatus;
+      await fs.writeFile(settingsPath, JSON.stringify(content));
+
+      const file = await fs.readFile(settingsPath);
+      
+      const uploadStatus = await this.s3.Upload({
+        buffer: file,
+        name: settingsFilename
+      }, '')
+
+      return !!uploadStatus;
+    } catch (error) {
+      return false;
+    }
   }
 }

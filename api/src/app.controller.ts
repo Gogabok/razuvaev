@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Put, Body } from '@nestjs/common';
 import { S3Service } from './s3/s3.service';
 
 @Controller('')
@@ -7,10 +7,9 @@ export class AppController {
     private readonly s3Service: S3Service
   ) {};
 
-  @Post('/upload') 
+  @Put('/update') 
   async UploadSettings(@Body() body) {
     const status = await this.s3Service.UploadSettings(body);
-
     return status;
   }
 }
