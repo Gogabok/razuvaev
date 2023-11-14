@@ -38,7 +38,14 @@ const upgradeBanner = computed(() => {
       }"
     />
 
-    <VerticalNavSectionTitle :item="{ heading: 'Проекты' }" />
+    <VerticalNavSectionTitle :item="{ heading: 'Контент' }" />
+    <VerticalNavLink
+      :item="{
+        title: 'Биография',
+        to: 'bio',
+        icon: { icon: 'mdi-account-box-outline' }
+      }"
+    />
     <VerticalNavLink
       :item="{
         title: 'Проекты',
@@ -47,7 +54,7 @@ const upgradeBanner = computed(() => {
       }"
     />
 
-    <VerticalNavLink
+    <!-- <VerticalNavLink
       :item="{
         title: 'Dashboard',
         to: 'index',
@@ -61,7 +68,6 @@ const upgradeBanner = computed(() => {
         icon: { icon: 'mdi-account-cog-outline' }
       }"
     />
-    <!-- 👉 Pages -->
     <VerticalNavSectionTitle :item="{ heading: 'Pages' }" />
     <VerticalNavLink
       :item="{
@@ -80,7 +86,6 @@ const upgradeBanner = computed(() => {
       }"
     />
 
-    <!-- ℹ️ This path doesn't exist so 404 route will catch this undefined path -->
     <VerticalNavLink
       :item="{
         title: 'Error',
@@ -90,7 +95,6 @@ const upgradeBanner = computed(() => {
       }"
     />
 
-    <!-- 👉 User Interface -->
     <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
 
     <VerticalNavLink
@@ -127,7 +131,7 @@ const upgradeBanner = computed(() => {
         to: 'form-layouts',
         icon: { icon: 'mdi-form-select' }
       }"
-    />
+    /> -->
   </ul>
 </template>
 

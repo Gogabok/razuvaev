@@ -36,6 +36,10 @@ const addLanguage = async () => {
 
   await setSettings('languages', languages.value);
 
+  languageCreatingName.value = '';
+  languageCreatingISO.value = '';
+
+  isModalActive.value = false;
   isLoading.value = false;
 };
 
@@ -46,7 +50,9 @@ const deleteLang = async (idx: number) => {
 
   isDeletingLoading.value = true;
 
-  languages.value = [...languages.value].splice(idx, 1);
+  const langs = [...languages.value];
+  langs.splice(idx, 1);
+  languages.value = [...langs];
   await setSettings('languages', languages.value);
   
   isDeletingLoading.value = false;
@@ -81,12 +87,6 @@ const deleteLang = async (idx: number) => {
                 {{ lang.iso }}
               </td>
               <td style="display: flex; align-items: center;">
-                <VBtn class="mr-1" size="small" variant="outlined">
-                  <VIcon icon="mdi-arrow-up-thin" />
-                </VBtn>
-                <VBtn class="mr-1" size="small" variant="outlined">
-                  <VIcon icon="mdi-arrow-down-thin" />
-                </VBtn>
                 <VBtn size="small" color="error" :loading="isDeletingLoading" @click="deleteLang(idx)">
                   <VIcon icon="mdi-trash" />
                 </VBtn>
@@ -109,7 +109,7 @@ const deleteLang = async (idx: number) => {
   </VRow>
 
   <VDialog v-model="isModalActive" width="400">
-    <VCard class="pa-5">
+    <VCard class="pa-5" title="Добавление языка">
       <VTextField
         v-model="languageCreatingName"
         placeholder="Название"
