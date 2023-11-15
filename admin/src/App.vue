@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { token } from '@/api';
+import { checkTokenValidation, token } from '@/api';
+import router from '@/router';
 
-onMounted(() => {
+onMounted(async () => {
   if(!token) {
+    const storagedToken = sessionStorage.getItem('razuvaev-admin-token');
+
+    if(storagedToken) {
+      const isTokenValid = await checkTokenValidation(storagedToken);
+
+      if(isTokenValid) {
+        return;
+      }
+    }
+
     if(!window.location.pathname.includes('/login')) {
-      window.location.href = '/login'
+      router.push('/login');
     }
   }
 })

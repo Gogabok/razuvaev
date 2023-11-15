@@ -67,10 +67,8 @@ export const setSettings = async <T extends keyof SettingsType, K extends typeof
   }
 
   settings[key] = data;
-  
-  console.log(JSON.stringify(settings))
 
-  const response = await (await fetch('http://localhost:3000/api/update', {
+  const response = await (await fetch(`http://localhost:3000/api/update?token=${token}`, {
     method: "PUT",
     headers: {
       'Content-Type': 'application/json',
@@ -81,54 +79,13 @@ export const setSettings = async <T extends keyof SettingsType, K extends typeof
   return response;
 }
 
+export const checkTokenValidation = async (tokenPayload: string): Promise<boolean> => {
+  const response = await (await fetch(`http://localhost:3000/api/token?token=${tokenPayload}`)).json();
 
-let l: SettingsType = {
-  "languages": [
-    {
-      "name": "Русский",
-      "iso": "ru"
-    },
-    {
-      "name": "English",
-      "iso": "en"
-    },
-    {
-      "name": "Сербски",
-      "iso": "sb"
-    }
-  ],
-  "biography": [{
-    "iso": "ru",
-    "text": "Since 2012, I am crafting brand identities, mastering graphic design, refining UI and UX design, and bringing interfaces to life through animation.\nI worked with Strelka Institute, Relap.io, VK and many other teams.\nI am committed to contributing to cancer treatment research by offering my design services pro bono.Feel free to contact me.",
-    "contacts": [
-      {
-        "type": "email",
-        "link": "alexey@razuvaev.me",
-        "visible": true
-      },
-      {
-        "type": "linkedin",
-        "link": "https://linkedin.com",
-        "visible": true
-      },
-      {
-        "type": "telegram",
-        "link": "https://telegram.com",
-        "visible": true
-      }
-    ],
-    "feed": [
-      {
-        "image": "https://i.imgur.com/3NtlwQi.png",
-        "text": "New identity and values: “Like Center” announced rebranding",
-        "link": "https://likecentre.ru"
-      },
-      {
-        "image": "https://i.imgur.com/3NtlwQi.png",
-        "text": "Enter Media — about my work with RMS Group and the team",
-        "link": "https://likecentre.ru"
-      }
-    ]
-  }],
-  "projects": []
-}
+  if(!!response.isTokenValid) {
+    token = tokenPayload;
+    sessionStorage.setItem('razuvaev-admin-token', token);
+  }
+
+  return !!(response.isTokenValid);
+};
