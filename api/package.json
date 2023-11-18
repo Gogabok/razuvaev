@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "deploy": "nest build && docker buildx build --platform linux/amd64 -f ./Dockerfile -t razuvaev-api . && docker tag razuvaev-api cr.yandex/crp5t7mb1nijhrs4gvqk/razuvaev-api && docker push cr.yandex/crp5t7mb1nijhrs4gvqk/razuvaev-api"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

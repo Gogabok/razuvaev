@@ -48,6 +48,7 @@ export interface SettingsType {
 
 let settings: SettingsType;
 export let token: string;
+const baseUrl: string = 'https://bba139i64r6qbkmf897l.containers.yandexcloud.net';
 
 export const getSettings = async (forceReload?: boolean): Promise<SettingsType> => {
   if(settings && !forceReload) {
@@ -68,7 +69,7 @@ export const setSettings = async <T extends keyof SettingsType, K extends typeof
 
   settings[key] = data;
 
-  const response = await (await fetch(`http://localhost:3000/api/update?token=${token}`, {
+  const response = await (await fetch(`${baseUrl}/api/update?token=${token}`, {
     method: "PUT",
     headers: {
       'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ export const setSettings = async <T extends keyof SettingsType, K extends typeof
 }
 
 export const checkTokenValidation = async (tokenPayload: string): Promise<boolean> => {
-  const response = await (await fetch(`http://localhost:3000/api/token?token=${tokenPayload}`)).json();
+  const response = await (await fetch(`${baseUrl}/api/token?token=${tokenPayload}`)).json();
 
   if(!!response.isTokenValid) {
     token = tokenPayload;
