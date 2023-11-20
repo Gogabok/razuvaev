@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import WorksList from './WorksList.vue';
+</script>
 
 <template>
-  <div>
-    
+  <div class="works-view">
+    <WorksList />
   </div>
 </template>

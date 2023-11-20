@@ -43,7 +43,7 @@ html, body, #app, .layout {
   display: flex;
   flex-direction: column;
 
-  // background: #000;
+  background: $ui-black;
 
   & * {
     font-family: inherit;

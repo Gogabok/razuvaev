@@ -1,9 +1,17 @@
-$size-sm: 336px;
-$size-md: 696px;
-$size-lg: 1056px;
 $size-xl: 1416px;
+$size-lg: 1056px;
+$size-md: 696px;
+$size-sm: 336px;
+$size-xs: 308px;
 
 $padding-xl: 12px;
 $padding-lg: 12px;
 $padding-md: 12px;
 $padding-sm: 12px;
+$padding-xs: 6px;
+
+$container-width-xl: $size-xl + $padding-xl * 2;
+$container-width-lg: $size-lg + $padding-lg * 2;
+$container-width-md: $size-md + $padding-md * 2;
+$container-width-sm: $size-sm + $padding-sm * 2;
+$container-width-xs: $size-xs + $padding-xs * 2;

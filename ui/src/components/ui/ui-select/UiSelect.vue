@@ -50,6 +50,10 @@ onMounted(() => {
         {{ selectedItemLabel }}
       </span>
 
+      <span class="ui-select-label__text ui-select-label__text--mobile">
+          {{ selectedItem }}
+      </span>
+
       <ArrowIcon
         class="ui-select-label__icon"
       />
@@ -67,6 +71,15 @@ onMounted(() => {
       >
         {{ item.label }}
       </span>
+
+      <span
+        v-for="item in items.filter(item => item.value !== selectedItem)"
+        :key="item.value"
+        class="ui-select-list__item ui-select-list__item--mobile"
+        @click="select(item.value)"
+      >
+        {{ item.value }}
+      </span>
     </div>
   </div>
 </template>
@@ -76,7 +89,7 @@ onMounted(() => {
 
 .ui-select {
   padding: ($font-size-base * .4) ($font-size-base * .8);
-  background-color: #191919;
+  background: rgba(0, 0, 0, 0.9);
   border-radius: 12px;
 
   position: relative;
@@ -90,6 +103,19 @@ onMounted(() => {
 
     &__text {
       @include font($font-size-base * 1.2, 400, 2);
+
+      &--mobile {
+        display: none;
+      }
+
+      @media screen and (max-width: $container-width-md) {
+        display: none;
+
+        &--mobile {
+          display: inline;
+          text-transform: capitalize;
+        }
+      }
     }
 
     &__icon {
@@ -111,7 +137,7 @@ onMounted(() => {
     position: absolute;
     left: 0;
     right: 0;
-    background-color: #191919;
+    background: inherit;
 
     padding: inherit;
 
@@ -134,6 +160,19 @@ onMounted(() => {
 
       &:hover {
         opacity: .8;
+      }
+
+      &--mobile {
+        display: none;
+      }
+
+      @media screen and (max-width: $container-width-md) {
+        display: none;
+
+        &--mobile {
+          display: inline;
+          text-transform: capitalize;
+        }
       }
     }
   }

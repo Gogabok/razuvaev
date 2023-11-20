@@ -1,28 +1,16 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import LogoIcon from '../../icons/LogoIcon.vue';
 import UiSelect from '../ui-select/UiSelect.vue';
 import { SettingsType } from '../../../types/api.types';
+import { getData } from '../../../utils/api';
 
 const route = useRoute();
 const router = useRouter();
 
-const languages = ref<SettingsType['languages']>([
-  {
-    name: 'Русский',
-    iso: 'ru'
-  },
-  {
-    name: 'English',
-    iso: 'en'
-  },
-  {
-    name: 'Српски',
-    iso: 'sr'
-  }
-]);
+const languages = ref<SettingsType['languages']>();
 const selectedLanguage = ref<SettingsType['languages'][number]>();
 
 interface NavigationItem {
@@ -58,16 +46,22 @@ const routeTo = (path: string) => {
 }
 
 const onLanguageSelect = (iso: SettingsType['languages'][number]['iso']) => {
-  const selectedLanguageItem = languages.value.find(l => l.iso === iso);
-  if(selectedLanguageItem) {
-    selectedLanguage.value = selectedLanguageItem;
+  if(languages.value && languages.value.length > 0) {
+    const selectedLanguageItem = languages.value.find(l => l.iso === iso);
+    if(selectedLanguageItem) {
+      selectedLanguage.value = selectedLanguageItem;
+    }
   }
 };
+
+onMounted(() => {
+  languages.value = (getData() as SettingsType)['languages'];
+});
 </script>
 
 <template>
   <div class="ui-header">
-    <div class="ui-header-content">
+    <div class="ui-header-content" v-if="languages">
       <LogoIcon />
 
       <nav class="ui-header-content-navigation">
@@ -107,6 +101,8 @@ const onLanguageSelect = (iso: SettingsType['languages'][number]['iso']) => {
   backdrop-filter: blur(12px);
 
   border-radius: 24px;
+
+  z-index: 2;
 
   &-content {
     display: flex;
