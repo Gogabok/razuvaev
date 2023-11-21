@@ -1,18 +1,14 @@
 import { SettingsType } from "../types/api.types";
 
 let data: SettingsType;
-let language: SettingsType['languages'][number]['iso'] = localStorage.getItem('_razuvaev_language') || 'ru';
-let isLoading: boolean = false;
+let language: SettingsType['languages'][number]['iso'] = localStorage.getItem('_razuvaev_language') || 'en';
 
 export const fetchData = async (): Promise<SettingsType> => {
-  isLoading = true;
-
   const timestamp = new Date().getTime();
   const timestampHours = Math.floor(timestamp / (3600 * 1000));
 
   const response = await (await fetch(`https://razuvaev-admin.website.yandexcloud.net/settings.json?v?=${timestampHours}`)).json();
   data = response;
-  isLoading = false;
   
   return data;
 }
