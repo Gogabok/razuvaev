@@ -89,7 +89,7 @@ onMounted(() => {
 
 .ui-select {
   padding: ($font-size-base * .4) ($font-size-base * .8);
-  background: rgba(0, 0, 0, 0.9);
+  background: $ui-black;
   border-radius: 12px;
 
   position: relative;
@@ -137,7 +137,7 @@ onMounted(() => {
     position: absolute;
     left: 0;
     right: 0;
-    background: inherit;
+    background-color: inherit;
 
     padding: inherit;
 

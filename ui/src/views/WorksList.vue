@@ -1,178 +1,23 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { SettingsType } from '../types/api.types';
+import { getData } from '../utils/api';
 
 import UiCard from '../components/ui/ui-card/UiCard.vue';
 
-const projects: SettingsType['projects'][number] = {
-  iso: 'ru',
-  items: [
-  {
-      rules: {
-        nda: true,
-        details: true
-      },
-      info: {
-        title: 'Like',
-        year: '2023',
-        link: 'https://likecentre.ru',
-        images: [
-          // {
-          //   link: 'https://likecentre-files.website.yandexcloud.net/new-main-site/images/courses-new/concentrat.jpg'
-          // },
-          {
-            link: 'https://i.imgur.com/BFCsS1o.png'
-          },
-          // {
-          //   link: 'https://i.imgur.com/EsFFpxv.png'
-          // }
-        ]
-      },
-      details: {
-        theme: {
-          background: '',
-          textColor: ''
-        },
-        content: [
-          {
-            title: '123',
-            text: '321'
-          }
-        ]
-      }
-    },
-    {
-      rules: {
-        nda: false,
-        details: true
-      },
-      info: {
-        title: 'Like',
-        year: '2023',
-        link: 'https://likecentre.ru',
-        images: [
-          {
-            link: 'https://i.imgur.com/BFCsS1o.png'
-          },
-          {
-            link: 'https://i.imgur.com/EsFFpxv.png'
-          }
-        ]
-      },
-      details: {
-        theme: {
-          background: '',
-          textColor: ''
-        },
-        content: [
-          {
-            title: '123',
-            text: '321'
-          }
-        ]
-      }
-    },
-    {
-      rules: {
-        nda: false,
-        details: true
-      },
-      info: {
-        title: 'Like',
-        year: '2023',
-        link: 'https://likecentre.ru',
-        images: [
-          {
-            link: 'https://i.imgur.com/BFCsS1o.png'
-          },
-          {
-            link: 'https://i.imgur.com/EsFFpxv.png'
-          }
-        ]
-      },
-      details: {
-        theme: {
-          background: '',
-          textColor: ''
-        },
-        content: [
-          {
-            title: '123',
-            text: '321'
-          }
-        ]
-      }
-    },
-    {
-      rules: {
-        nda: false,
-        details: true
-      },
-      info: {
-        title: 'Like',
-        year: '2023',
-        link: 'https://likecentre.ru',
-        images: [
-          {
-            link: 'https://i.imgur.com/BFCsS1o.png'
-          },
-          {
-            link: 'https://i.imgur.com/EsFFpxv.png'
-          }
-        ]
-      },
-      details: {
-        theme: {
-          background: '',
-          textColor: ''
-        },
-        content: [
-          {
-            title: '123',
-            text: '321'
-          }
-        ]
-      }
-    },
-    {
-      rules: {
-        nda: false,
-        details: true
-      },
-      info: {
-        title: 'Like',
-        year: '2023',
-        link: 'https://likecentre.ru',
-        images: [
-          {
-            link: 'https://i.imgur.com/BFCsS1o.png'
-          },
-          {
-            link: 'https://i.imgur.com/EsFFpxv.png'
-          }
-        ]
-      },
-      details: {
-        theme: {
-          background: '',
-          textColor: ''
-        },
-        content: [
-          {
-            title: '123',
-            text: '321'
-          }
-        ]
-      }
-    }
-  ]
-}
+const projects = ref<SettingsType['projects'][number]>();
+
+onMounted(() => {
+  projects.value = getData('projects') as SettingsType['projects'][number];
+});
 </script>
 
 <template>
-  <div class="works-list">
+  <div class="works-list" v-if="projects">
     <UiCard
-      v-for="project in projects.items"
+      v-for="(project, projectIndex) in projects.items"
       :key="project.info.title"
+      :index="projectIndex"
       :title="project.info.title"
       :year="project.info.year"
       :link="project.info.link"

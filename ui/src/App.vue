@@ -5,6 +5,13 @@ import UiHeader from './components/ui/ui-header/UiHeader.vue';
 
 const isLoading = ref<boolean>(true);
 
+const reloadApplication = () => {
+  isLoading.value = true;
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 0)
+};
+
 onMounted(async () => {
   await fetchData();
   isLoading.value = false;
@@ -13,7 +20,9 @@ onMounted(async () => {
 
 <template>
   <div class="layout" v-if="!isLoading">
-    <UiHeader />
+    <UiHeader
+      @on-change-language="reloadApplication"
+    />
     <RouterView />
   </div>
 </template>

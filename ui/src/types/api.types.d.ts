@@ -1,3 +1,5 @@
+export type Social = "email" | "linkedin" | "telegram" | "medium" | "dribble" | "behance" | "facebook";
+
 export interface SettingsType {
   languages: {
     name: string;

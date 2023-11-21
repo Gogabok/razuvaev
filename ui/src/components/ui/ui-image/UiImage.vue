@@ -12,6 +12,11 @@ interface Props {
 }
 
 defineProps<Props>();
+const emits = defineEmits(['on-click']);
+
+const onClick = () => {
+  emits('on-click');
+}
 </script>
 
 <template>
@@ -24,6 +29,7 @@ defineProps<Props>();
         :src="images[0]"
         alt="Preview"
         ondragstart="return false"
+        @click="onClick"
       />
     </div>
 
@@ -46,6 +52,7 @@ defineProps<Props>();
           :src="image"
           alt="Preview"
           ondragstart="return false"
+          @click="onClick"
         />
       </swiper-slide>
     </swiper>
@@ -110,11 +117,15 @@ defineProps<Props>();
 
       transform: translateX(-50%);
 
+      color: $ui-white;
+
       @include font($font-size-base * 1.6, 400, $font-size-base * 2.4);
       @include disable-text-selection();
     }
 
     & img {
+      width: 100%;
+
       @include disable-text-selection();
     }
   }

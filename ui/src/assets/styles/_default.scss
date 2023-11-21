@@ -43,9 +43,15 @@ html, body, #app, .layout {
   display: flex;
   flex-direction: column;
 
-  background: $ui-black;
-
   & * {
     font-family: inherit;
   }
+}
+
+body {
+  background-color: $ui-black;
+}
+
+#app {
+  background-color: $ui-black;
 }

@@ -5,13 +5,15 @@ import { useRoute, useRouter } from 'vue-router';
 import LogoIcon from '../../icons/LogoIcon.vue';
 import UiSelect from '../ui-select/UiSelect.vue';
 import { SettingsType } from '../../../types/api.types';
-import { getData } from '../../../utils/api';
+import { getData, getLanguageIso, changeLanguage } from '../../../utils/api';
 
 const route = useRoute();
 const router = useRouter();
 
 const languages = ref<SettingsType['languages']>();
 const selectedLanguage = ref<SettingsType['languages'][number]>();
+
+const emits = defineEmits(['on-change-language']);
 
 interface NavigationItem {
   path: string;
@@ -20,7 +22,7 @@ interface NavigationItem {
 
 const navigation = ref<NavigationItem[]>([
   {
-    path: '/',
+    path: '/works',
     title: {
       ru: 'Работы',
       en: 'Works',
@@ -46,22 +48,29 @@ const routeTo = (path: string) => {
 }
 
 const onLanguageSelect = (iso: SettingsType['languages'][number]['iso']) => {
+  const oldIso = selectedLanguage.value?.iso;
   if(languages.value && languages.value.length > 0) {
     const selectedLanguageItem = languages.value.find(l => l.iso === iso);
     if(selectedLanguageItem) {
       selectedLanguage.value = selectedLanguageItem;
+      changeLanguage(selectedLanguage.value.iso);
+
+      if(oldIso !== iso) {
+        emits('on-change-language');
+      }
     }
   }
 };
 
 onMounted(() => {
   languages.value = (getData() as SettingsType)['languages'];
+  selectedLanguage.value = languages.value.find(l => l.iso === getLanguageIso()) || languages.value[0];
 });
 </script>
 
 <template>
   <div class="ui-header">
-    <div class="ui-header-content" v-if="languages">
+    <div class="ui-header-content" v-if="languages && selectedLanguage">
       <LogoIcon />
 
       <nav class="ui-header-content-navigation">
@@ -70,7 +79,7 @@ onMounted(() => {
           :key="item.path"
           class="ui-header-content-navigation__item"
           :class="{
-            'ui-header-content-navigation__item--active': currentActiveLink === item.path
+            'ui-header-content-navigation__item--active': currentActiveLink.includes(item.path)
           }"
           @click="routeTo(item.path)"
         >
@@ -80,7 +89,7 @@ onMounted(() => {
 
       <UiSelect
         :items="languages.map(item => ({ value: item.iso, label: item.name }))"
-        :default="languages.map(item => ({ value: item.iso, label: item.name }))[0]"
+        :default="{ value: selectedLanguage.iso, label: selectedLanguage.name }"
         @on-select="onLanguageSelect"
       />
     </div> 
@@ -97,7 +106,7 @@ onMounted(() => {
   margin: ($font-size-base * 1.2) 0;
   padding: ($font-size-base * 0.8);
 
-  background: rgba(0, 0, 0, 0.9);
+  background: $ui-black;
   backdrop-filter: blur(12px);
 
   border-radius: 24px;
@@ -142,7 +151,7 @@ onMounted(() => {
         &--active {
           background-color: $ui-white;
           color: $ui-black;
-          pointer-events: none;
+          // pointer-events: none;
         }
       }
     }

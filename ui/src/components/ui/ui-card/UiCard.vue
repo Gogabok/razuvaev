@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { SettingsType } from '../../../types/api.types';
+import { useRouter } from 'vue-router';
 
 import UiImage from '../ui-image/UiImage.vue';
 import ArrowLinkIcon from '../../icons/ArrowLinkIcon.vue';
+
+const router = useRouter();
 
 interface Props {
   title: string;
@@ -11,12 +14,19 @@ interface Props {
   isDetails: boolean;
   isNda: boolean;
   images: SettingsType['projects'][number]['items'][number]['info']['images'];
+  index?: number;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const openLink = (link: string) => {
   window.open(link);
+}
+
+const routeToCard = () => {
+  if(props.isDetails && (typeof props.index !== 'undefined')) {
+    router.push(`/works/${props.index}`);
+  }
 }
 </script>
 
@@ -26,10 +36,12 @@ const openLink = (link: string) => {
     :class="{
       'ui-card--nda': isNda
     }"
+    @click.self="routeToCard"
   >
     <UiImage
       :images="images.map(image => image.link)"
       class="ui-card-image"
+      @on-click="routeToCard"
     >
       <template #icon>
         <div
@@ -41,7 +53,10 @@ const openLink = (link: string) => {
       </template>
     </UiImage>
 
-    <div class="ui-card-details">
+    <div
+      class="ui-card-details"
+      @click.self="routeToCard"
+    >
       <span class="ui-card-details__title">
         {{ title }}
       </span>
@@ -109,6 +124,7 @@ const openLink = (link: string) => {
         align-items: center;
         justify-content: center;
         text-transform: uppercase;
+        pointer-events: none;
 
         backdrop-filter: blur(12px);
 
