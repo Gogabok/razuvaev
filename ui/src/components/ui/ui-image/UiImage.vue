@@ -9,6 +9,8 @@ import 'swiper/css/navigation';
 
 interface Props {
   images: string[];
+  gallery: boolean;
+  alwaysOn?: boolean;
 }
 
 defineProps<Props>();
@@ -20,9 +22,14 @@ const onClick = () => {
 </script>
 
 <template>
-  <div class="ui-image">
+  <div
+    class="ui-image"
+    :class="{
+      'ui-image--always-on': alwaysOn
+    }"
+  >
     <div
-      v-if="images.length > 0 && images.length < 2"
+      v-if="(images.length > 0 && images.length < 2) || !gallery"
       class="ui-image-container one-picture-container"
     >
       <img
@@ -58,6 +65,7 @@ const onClick = () => {
     </swiper>
 
     <slot name="icon" />
+    <slot name="description" />
   </div>
 </template>
 
@@ -84,19 +92,36 @@ const onClick = () => {
       box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
       backdrop-filter: blur(6px);
 
-      padding: 12px 4px;
+      padding: 10px 2px;
       border-radius: 24px;
 
-      @include transition(background-color);
+      width: 24px;
+      height: 40px;
+
+      opacity: 0;
+
+      @include transition((background-color, opacity));
 
       &:after {
-        font-size: 12px;
+        font-size: 14px;
         color: $ui-white;
       }
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: $ui-white;
+
+        &:after {
+          color: $ui-black;
+        }
       }
+    }
+
+    & .swiper-button-next {
+      right: 8px;
+    }
+
+    & .swiper-button-prev {
+      left: 8px;
     }
 
     & .swiper-pagination {
@@ -115,18 +140,47 @@ const onClick = () => {
       min-width: 54px;
       left: 50%;
 
+      gap: 2px;
+
       transform: translateX(-50%);
 
       color: $ui-white;
 
+      opacity: 0;
+
       @include font($font-size-base * 1.6, 400, $font-size-base * 2.4);
       @include disable-text-selection();
+      @include transition((opacity));
     }
 
     & img {
       width: 100%;
 
       @include disable-text-selection();
+    }
+  }
+
+  &--always-on {
+    & .swiper {
+      & .swiper-button-next, & .swiper-button-prev {
+        opacity: 1;
+      }
+    }
+
+    & .swiper-pagination {
+      opacity: 1;
+    }
+  }
+
+  &:hover {
+    & .swiper {
+      & .swiper-button-next, & .swiper-button-prev {
+        opacity: 1;
+      }
+    }
+
+    & .swiper-pagination {
+      opacity: 1;
     }
   }
 }

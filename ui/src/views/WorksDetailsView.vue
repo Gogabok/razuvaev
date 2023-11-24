@@ -72,10 +72,13 @@ onUnmounted(() => {
 
     <UiImage
       :images="currentProject.info.images.map(image => image.link)"
+      :gallery="true"
+      :always-on="true"
       class="works-details-view-image"
     >
       <template #icon>
         <div
+          v-if="currentProject.info.link"
           class="works-details-view-image__link"
           @click="openLink(currentProject.info.link)"
         >
@@ -140,8 +143,18 @@ onUnmounted(() => {
 
       @include transition(background-color);
 
+      & svg {
+        stroke: $ui-white;
+
+        @include transition(stroke);
+      }
+
       &:hover {
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: $ui-white;
+
+        & svg {
+          stroke: $ui-black;
+        }
       }
     }
   }

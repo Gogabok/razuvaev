@@ -71,7 +71,10 @@ onMounted(() => {
 <template>
   <div class="ui-header">
     <div class="ui-header-content" v-if="languages && selectedLanguage">
-      <LogoIcon />
+      <LogoIcon
+        class="ui-header-content__logo"
+        @click="routeTo('/works')"
+      />
 
       <nav class="ui-header-content-navigation">
         <li
@@ -119,6 +122,16 @@ onMounted(() => {
     align-items: center;
 
     position: relative;
+
+    &__logo {
+      cursor: pointer;
+
+      @include transition(opacity);
+
+      &:hover {
+        opacity: .8;
+      }
+    }
 
     &-navigation {
       display: flex;

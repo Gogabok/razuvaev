@@ -24,6 +24,7 @@ const openLink = (link: string) => {
     >
       <UiImage
         :images="[f.image]"
+        :gallery="false"
         class="ui-feed-item__image"
       />
 
@@ -76,10 +77,20 @@ const openLink = (link: string) => {
 
       margin-left: auto;
       
-      @include transition(opacity);
+      @include transition(background-color);
+
+      & svg {
+        stroke: $ui-white;
+
+        @include transition(stroke);
+      }
 
       &:hover {
-        opacity: .8;
+        background-color: $ui-white;
+
+        & svg {
+          stroke: $ui-black;
+        }
       }
     }
   }
