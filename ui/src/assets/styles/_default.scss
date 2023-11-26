@@ -1,0 +1,57 @@
+@import './variables/index.scss';
+
+html {
+  min-height: 100vh;
+}
+
+body {
+  overflow-x: hidden;
+  height: 100%;
+
+  flex: 1;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+#app, .layout {
+  height: 100%;
+  flex: 1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+  margin: 0;
+  color: $ui-white;
+}
+
+html, body, #app, .layout {
+  font-size: $font-size-base;
+  font-family: $font-family-base;
+  color: $ui-white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
+
+  display: flex;
+  flex-direction: column;
+
+  & * {
+    font-family: inherit;
+  }
+}
+
+body {
+  background-color: $ui-black;
+}
+
+#app {
+  background-color: $ui-black;
+}
