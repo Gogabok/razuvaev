@@ -29,3 +29,16 @@ export const changeLanguage = (languagePayload: SettingsType['languages'][number
 export const getLanguageIso = () => {
   return language;
 }
+
+export const detectContentByLink = (link: string): 'image' | 'video' => {
+  const imagesMap = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
+  let contentType: 'image' | 'video' = 'video';
+
+  imagesMap.forEach(image_type => {
+    if(link.includes(`.${image_type}`)) {
+      contentType = 'image';
+    };
+  });
+
+  return contentType;
+};
