@@ -4,6 +4,24 @@ const EasyYandexS3 = require('easy-yandex-s3').default;
 const fs = require('fs-extra');
 const TelegramBot = require('node-telegram-bot-api');
 
+const messageConverter = (m: string): string[] => { 
+  const max_size = 4096;
+
+  const amount_sliced = m.length / max_size;
+  let start = 0;
+  let end = max_size;
+  let message;
+  const messagesArray = [];
+  for (let i = 0; i < amount_sliced; i++) {
+    message = m.slice(start, end);
+    messagesArray.push(message);
+    start = start + max_size;
+    end = end + max_size;
+  }
+
+  return messagesArray;
+}
+
 @Injectable()
 export class S3Service {
   private readonly TelegramToken = process.env.TG_BOT_ID
@@ -27,23 +45,29 @@ export class S3Service {
     try {
       const settingsFilename = 'settings.json';
       const settingsPath = `settings/${settingsFilename}`;
+      const _content = JSON.stringify(content);
 
-      await fs.remove(settingsPath);
+      console.log(_content, content);
 
-      await fs.ensureDir('settings')
+      // await fs.remove(settingsPath);
 
-      await fs.writeFile(settingsPath, JSON.stringify(content));
+      // await fs.ensureDir('settings')
 
-      this.bot.sendMessage(this.TelegramGroupID, `<b>Сохраняю контент</b>\n\nJSON: ${JSON.stringify(content)}`, { parse_mode: 'html' })
+      // await fs.writeFile(settingsPath, _content);
 
-      const file = await fs.readFile(settingsPath);
+      messageConverter(_content).forEach(message => {
+        this.bot.sendMessage(this.TelegramGroupID, message, { parse_mode: 'html' })
+      });
+
+      // const file = await fs.readFile(settingsPath);
       
-      const uploadStatus = await this.s3.Upload({
-        buffer: file,
-        name: settingsFilename
-      }, '')
+      // const uploadStatus = await this.s3.Upload({
+      //   buffer: file,
+      //   name: settingsFilename
+      // }, '');
 
-      return !!uploadStatus;
+      // return !!uploadStatus;
+      return true;
     } catch (error) {
       return false;
     }
