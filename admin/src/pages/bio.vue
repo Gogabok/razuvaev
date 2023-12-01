@@ -48,7 +48,7 @@ const onSave = async () => {
     biography.value = biographyCopy;
 
     await setSettings('biography', biography.value);
-    setSettings('projects', []);
+    // setSettings('projects', []);
 
     isLoading.value = false;
   }
