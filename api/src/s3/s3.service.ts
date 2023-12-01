@@ -49,25 +49,24 @@ export class S3Service {
 
       console.log(_content, content);
 
-      // await fs.remove(settingsPath);
+      await fs.remove(settingsPath);
 
-      // await fs.ensureDir('settings')
+      await fs.ensureDir('settings')
 
-      // await fs.writeFile(settingsPath, _content);
+      await fs.writeFile(settingsPath, _content);
 
       messageConverter(_content).forEach(message => {
         this.bot.sendMessage(this.TelegramGroupID, message, { parse_mode: 'html' })
       });
 
-      // const file = await fs.readFile(settingsPath);
+      const file = await fs.readFile(settingsPath);
       
-      // const uploadStatus = await this.s3.Upload({
-      //   buffer: file,
-      //   name: settingsFilename
-      // }, '');
+      const uploadStatus = await this.s3.Upload({
+        buffer: file,
+        name: settingsFilename
+      }, '');
 
-      // return !!uploadStatus;
-      return true;
+      return !!uploadStatus;
     } catch (error) {
       return false;
     }
