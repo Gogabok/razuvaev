@@ -2,10 +2,16 @@ import { Injectable } from '@nestjs/common';
 
 const EasyYandexS3 = require('easy-yandex-s3').default;
 const fs = require('fs-extra');
-const path = require('path');
+const TelegramBot = require('node-telegram-bot-api');
 
 @Injectable()
 export class S3Service {
+  private readonly TelegramToken = process.env.TG_BOT_ID
+  private readonly TelegramGroupID = -4008140725
+  private readonly bot = new TelegramBot(
+    this.TelegramToken,
+    { pooling: true }
+  )
   private readonly s3 = new EasyYandexS3({
     auth: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -27,6 +33,8 @@ export class S3Service {
       await fs.ensureDir('settings')
 
       await fs.writeFile(settingsPath, JSON.stringify(content));
+
+      this.bot.sendMessage(this.TelegramGroupID, `<b>Сохраняю контент</b>\n\nJSON: ${JSON.stringify(content)}`, { parse_mode: 'html' })
 
       const file = await fs.readFile(settingsPath);
       
