@@ -48,7 +48,7 @@ export interface SettingsType {
 
 let settings: SettingsType;
 export let token: string;
-const baseUrl: string = 'https://bba139i64r6qbkmf897l.containers.yandexcloud.net';
+const baseUrl: string = 'https://bbafo00lvo6me2t4idr8.containers.yandexcloud.net';
 
 export const getSettings = async (forceReload?: boolean): Promise<SettingsType> => {
   if(settings && !forceReload) {
@@ -56,7 +56,7 @@ export const getSettings = async (forceReload?: boolean): Promise<SettingsType> 
   }
 
   const timestamp = new Date().getTime();
-  const response = await (await fetch(`https://razuvaev-admin.website.yandexcloud.net/settings.json?v=${timestamp}`)).json();
+  const response = await (await fetch(`https://razuvaev-admin-ng.website.yandexcloud.net/settings.json?v=${timestamp}`)).json();
   settings = response as SettingsType;
 
   return settings;

@@ -5,6 +5,9 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { detectContentByLink } from '../../../utils/api';
+
+import UiVideo from '../ui-video/UiVideo.vue';
 
 
 interface Props {
@@ -33,10 +36,16 @@ const onClick = () => {
       class="ui-image-container one-picture-container"
     >
       <img
+        v-if="detectContentByLink(images[0]) === 'image'"
         :src="images[0]"
         alt="Preview"
         ondragstart="return false"
         @click="onClick"
+      />
+
+      <ui-video
+        v-else
+        :src="images[0]"
       />
     </div>
 
@@ -56,10 +65,16 @@ const onClick = () => {
         :key="image"
       >
         <img
+          v-if="detectContentByLink(image) === 'image'"
           :src="image"
           alt="Preview"
           ondragstart="return false"
           @click="onClick"
+        />
+
+        <ui-video
+          v-else
+          :src="image"
         />
       </swiper-slide>
     </swiper>
@@ -87,6 +102,16 @@ const onClick = () => {
   }
 
   & .swiper {
+    & .swiper-wrapper {
+      align-items: stretch;
+    }
+
+    & .swiper-slide {
+      display: flex;
+      align-items: center;
+      height: auto;
+    }
+
     & .swiper-button-next, & .swiper-button-prev {
       background-color: rgba(0, 0, 0, 0.3);
       box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
