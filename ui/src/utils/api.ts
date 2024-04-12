@@ -7,7 +7,7 @@ export const fetchData = async (): Promise<SettingsType> => {
   const timestamp = new Date().getTime();
   const timestampHours = Math.floor(timestamp / (3600 * 1000));
 
-  const response = await (await fetch(`https://razuvaev-admin.website.yandexcloud.net/settings.json?v?=${timestampHours}`)).json();
+  const response = await (await fetch(`https://razuvaev-admin-ng.website.yandexcloud.net/settings.json?v?=${timestampHours}`)).json();
   data = response;
   
   return data;
